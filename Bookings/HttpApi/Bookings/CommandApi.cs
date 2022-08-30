@@ -1,25 +1,20 @@
+using Account.Application;
 using Bookings.Domain.Bookings;
 using Eventuous;
 using Eventuous.AspNetCore.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Bookings.Application.BookingCommands;
+//using static Account.Application.AccountCommands;
 
-namespace Bookings.HttpApi.Bookings;
+namespace Account.HttpApi.Bookings;
 
-[Route("/booking")]
-public class CommandApi : CommandHttpApiBase<Booking> {
-    public CommandApi(IApplicationService<Booking> service) : base(service) { }
-
-    [HttpPost]
-    [Route("book")]
-    public Task<ActionResult<Result>> BookRoom([FromBody] BookRoom cmd, CancellationToken cancellationToken)
-        => Handle(cmd, cancellationToken);
+[Route("/accounts")]
+public class CommandApi : CommandHttpApiBase<global::Bookings.Domain.Bookings.Account>
+{
+    public CommandApi(IApplicationService<global::Bookings.Domain.Bookings.Account> service) : base(service) { }
 
     [HttpPost]
-    [Route("recordPayment")]
-    public Task<ActionResult<Result>> RecordPayment(
-        [FromBody] RecordPayment cmd, CancellationToken cancellationToken
-    )
+    [Route("startCreatingPersonalAccount")]
+    public Task<ActionResult<Result>> StartCreatingPersonalAccount([FromBody] AccountCommands.StartCreatingPersonalAccount cmd, CancellationToken cancellationToken)
         => Handle(cmd, cancellationToken);
 }

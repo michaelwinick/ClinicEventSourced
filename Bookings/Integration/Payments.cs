@@ -1,17 +1,19 @@
 using Bookings.Domain.Bookings;
 using Eventuous;
-using static Bookings.Application.BookingCommands;
-using static Bookings.Integration.IntegrationEvents;
+using static Account.Application.AccountCommands;
+using static Account.Integration.IntegrationEvents;
 using EventHandler = Eventuous.Subscriptions.EventHandler;
 
-namespace Bookings.Integration;
+namespace Account.Integration;
 
-public class PaymentsIntegrationHandler : EventHandler {
+public class PaymentsIntegrationHandler : EventHandler
+{
     public static readonly StreamName Stream = new("PaymentsIntegration");
 
-    readonly IApplicationService<Booking> _applicationService;
+    readonly IApplicationService<Bookings.Domain.Bookings.Account> _applicationService;
 
-    public PaymentsIntegrationHandler(IApplicationService<Booking> applicationService) {
+    public PaymentsIntegrationHandler(IApplicationService<Bookings.Domain.Bookings.Account> applicationService)
+    {
         _applicationService = applicationService;
         On<BookingPaymentRecorded>(async ctx => await HandlePayment(ctx.Message, ctx.CancellationToken));
     }
@@ -29,7 +31,8 @@ public class PaymentsIntegrationHandler : EventHandler {
         );
 }
 
-static class IntegrationEvents {
+static class IntegrationEvents
+{
     [EventType("BookingPaymentRecorded")]
     public record BookingPaymentRecorded(string PaymentId, string BookingId, float Amount, string Currency);
 }

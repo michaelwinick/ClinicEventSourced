@@ -1,9 +1,10 @@
 using Serilog;
 using Serilog.Events;
 
-namespace Bookings.Payments.Infrastructure;
+namespace Clinic.Infrastructure;
 
-public static class Logging {
+public static class Logging
+{
     public static void ConfigureLog()
         => Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()

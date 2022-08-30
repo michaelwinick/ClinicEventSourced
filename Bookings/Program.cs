@@ -1,4 +1,4 @@
-using Bookings;
+using Account;
 using Bookings.Domain.Bookings;
 using Eventuous;
 using Eventuous.AspNetCore;

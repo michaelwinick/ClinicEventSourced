@@ -1,10 +1,11 @@
 using System.Text.Json;
-using Bookings.Application;
-using Bookings.Application.Queries;
+using Account;
+using Account.Application;
+using Account.Application.Queries;
+using Account.Infrastructure;
+using Account.Integration;
 using Bookings.Domain;
 using Bookings.Domain.Bookings;
-using Bookings.Infrastructure;
-using Bookings.Integration;
 using Eventuous;
 using Eventuous.Diagnostics.OpenTelemetry;
 using Eventuous.EventStore;
@@ -17,10 +18,12 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace Bookings;
+namespace Account;
 
-public static class Registrations {
-    public static void AddEventuous(this IServiceCollection services, IConfiguration configuration) {
+public static class Registrations
+{
+    public static void AddEventuous(this IServiceCollection services, IConfiguration configuration)
+    {
         DefaultEventSerializer.SetDefaultSerializer(
             new DefaultEventSerializer(
                 new JsonSerializerOptions(JsonSerializerDefaults.Web).ConfigureForNodaTime(DateTimeZoneProviders.Tzdb)
@@ -29,7 +32,7 @@ public static class Registrations {
 
         services.AddEventStoreClient(configuration["EventStore:ConnectionString"]);
         services.AddAggregateStore<EsdbEventStore>();
-        services.AddApplicationService<BookingsCommandService, Booking>();
+        services.AddApplicationService<BookingsCommandService, Bookings.Domain.Bookings.Account>();
 
         services.AddSingleton<Services.IsRoomAvailable>((id, period) => new ValueTask<bool>(true));
 
@@ -47,7 +50,7 @@ public static class Registrations {
                 .AddEventHandler<MyBookingsProjection>()
                 .WithPartitioningByStream(2)
         );
-        
+
         services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
             "PaymentIntegration",
             builder => builder
@@ -56,10 +59,12 @@ public static class Registrations {
         );
     }
 
-    public static void AddOpenTelemetry(this IServiceCollection services) {
+    public static void AddOpenTelemetry(this IServiceCollection services)
+    {
         var otelEnabled = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT") != null;
         services.AddOpenTelemetryMetrics(
-            builder => {
+            builder =>
+            {
                 builder
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("bookings"))
                     .AddAspNetCoreInstrumentation()
@@ -71,7 +76,8 @@ public static class Registrations {
         );
 
         services.AddOpenTelemetryTracing(
-            builder => {
+            builder =>
+            {
                 builder
                     .AddAspNetCoreInstrumentation()
                     .AddGrpcClientInstrumentation()

@@ -5,10 +5,12 @@ using static Bookings.Domain.Bookings.BookingEvents;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Bookings.Application.Queries;
+namespace Account.Application.Queries;
 
-public class BookingStateProjection : MongoProjection<BookingDocument> {
-    public BookingStateProjection(IMongoDatabase database) : base(database) {
+public class BookingStateProjection : MongoProjection<BookingDocument>
+{
+    public BookingStateProjection(IMongoDatabase database) : base(database)
+    {
         On<V1.RoomBooked>(stream => stream.GetId(), HandleRoomBooked);
 
         On<V1.PaymentRecorded>(
@@ -29,7 +31,8 @@ public class BookingStateProjection : MongoProjection<BookingDocument> {
 
     static UpdateDefinition<BookingDocument> HandleRoomBooked(
         IMessageConsumeContext<V1.RoomBooked> ctx, UpdateDefinitionBuilder<BookingDocument> update
-    ) {
+    )
+    {
         var evt = ctx.Message;
 
         return update.SetOnInsert(x => x.Id, ctx.Stream.GetId())

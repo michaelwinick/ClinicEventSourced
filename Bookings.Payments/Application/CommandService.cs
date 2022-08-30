@@ -1,12 +1,14 @@
 using System.Text.Json.Serialization;
-using Bookings.Payments.Domain;
+using Clinic.Domain;
 using Eventuous;
 using Eventuous.AspNetCore.Web;
 
-namespace Bookings.Payments.Application;
+namespace Clinic.Application;
 
-public class CommandService : ApplicationService<Payment, PaymentState, PaymentId> {
-    public CommandService(IAggregateStore store) : base(store) {
+public class CommandService : ApplicationService<Payment, PaymentState, PaymentId>
+{
+    public CommandService(IAggregateStore store) : base(store)
+    {
         OnNew<PaymentCommands.RecordPayment>(
             cmd => new PaymentId(cmd.PaymentId),
             (payment, cmd) => payment.ProcessPayment(
@@ -21,15 +23,16 @@ public class CommandService : ApplicationService<Payment, PaymentState, PaymentI
 }
 
 // [AggregateCommands(typeof(Payment))]
-public static class PaymentCommands {
+public static class PaymentCommands
+{
     [HttpCommand]
     public record RecordPayment(
-        string                        PaymentId,
-        string                        BookingId,
-        float                         Amount,
-        string                        Currency,
-        string                        Method,
-        string                        Provider,
+        string PaymentId,
+        string BookingId,
+        float Amount,
+        string Currency,
+        string Method,
+        string Provider,
         [property: JsonIgnore] string PaidBy
     );
 }

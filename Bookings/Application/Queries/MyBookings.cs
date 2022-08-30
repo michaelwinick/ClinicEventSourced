@@ -1,9 +1,10 @@
 using Eventuous.Projections.MongoDB.Tools;
 using NodaTime;
 
-namespace Bookings.Application.Queries;
+namespace Account.Application.Queries;
 
-public record MyBookings : ProjectedDocument {
+public record MyBookings : ProjectedDocument
+{
     public MyBookings(string id) : base(id) { }
 
     public List<Booking> Bookings { get; init; } = new();

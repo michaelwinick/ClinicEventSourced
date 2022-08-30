@@ -1,6 +1,6 @@
-using Bookings.Payments;
-using Bookings.Payments.Domain;
-using Bookings.Payments.Infrastructure;
+using Clinic;
+using Clinic.Domain;
+using Clinic.Infrastructure;
 using Eventuous;
 using Eventuous.AspNetCore;
 using Serilog;

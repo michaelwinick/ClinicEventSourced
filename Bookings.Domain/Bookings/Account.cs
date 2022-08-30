@@ -4,7 +4,7 @@ using static Bookings.Domain.Services;
 
 namespace Bookings.Domain.Bookings;
 
-public class Booking : Aggregate<BookingState> {
+public class Account : Aggregate<BookingState> {
     public async Task BookRoom(
         BookingId       bookingId,
         string          guestId,

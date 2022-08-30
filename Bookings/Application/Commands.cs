@@ -1,15 +1,16 @@
-namespace Bookings.Application;
+namespace Account.Application;
 
-public static class BookingCommands {
-    public record BookRoom(
-        string         BookingId,
-        string         GuestId,
-        string         RoomId,
-        DateTime       CheckInDate,
-        DateTime       CheckOutDate,
-        float          BookingPrice,
-        float          PrepaidAmount,
-        string         Currency,
+public static class AccountCommands
+{
+    public record StartCreatingPersonalAccount(
+        string BookingId,
+        string GuestId,
+        string RoomId,
+        DateTime CheckInDate,
+        DateTime CheckOutDate,
+        float BookingPrice,
+        float PrepaidAmount,
+        string Currency,
         DateTimeOffset BookingDate
     );
 

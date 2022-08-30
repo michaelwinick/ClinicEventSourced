@@ -2,13 +2,15 @@ using Bookings.Domain;
 using Bookings.Domain.Bookings;
 using Eventuous;
 using NodaTime;
-using static Bookings.Application.BookingCommands;
+using static Account.Application.AccountCommands;
 
-namespace Bookings.Application;
+namespace Account.Application;
 
-public class BookingsCommandService : ApplicationService<Booking, BookingState, BookingId> {
-    public BookingsCommandService(IAggregateStore store, Services.IsRoomAvailable isRoomAvailable) : base(store) {
-        OnNewAsync<BookRoom>(
+public class BookingsCommandService : ApplicationService<Bookings.Domain.Bookings.Account, BookingState, BookingId>
+{
+    public BookingsCommandService(IAggregateStore store, Services.IsRoomAvailable isRoomAvailable) : base(store)
+    {
+        OnNewAsync<StartCreatingPersonalAccount>(
             cmd => new BookingId(cmd.BookingId),
             (booking, cmd, _) => booking.BookRoom(
                 new BookingId(cmd.BookingId),
