@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using Eventuous;
-using static Account.Domain.Account.BookingEvents;
+using static Account.Domain.Account.AccountEvents;
 
 namespace Account.Domain.Account;
 

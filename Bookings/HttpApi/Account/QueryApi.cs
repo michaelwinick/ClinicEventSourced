@@ -13,9 +13,9 @@ public class QueryApi : ControllerBase
 
     [HttpGet]
     [Route("{id}")]
-    public async Task<AccountState> GetBooking(string id, CancellationToken cancellationToken)
+    public async Task<AccountState> GetAccount(string id, CancellationToken cancellationToken)
     {
-        var booking = await _store.Load<global::Account.Domain.Account.Account>(StreamName.For<global::Account.Domain.Account.Account>(id), cancellationToken);
-        return booking.State;
+        var account = await _store.Load<Domain.Account.Account>(StreamName.For<Domain.Account.Account>(id), cancellationToken);
+        return account.State;
     }
 }

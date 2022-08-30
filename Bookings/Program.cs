@@ -8,7 +8,7 @@ using NodaTime.Serialization.SystemTextJson;
 using Serilog;
 using Serilog.Events;
 
-TypeMap.RegisterKnownEventTypes(typeof(BookingEvents.V1.RoomBooked).Assembly);
+TypeMap.RegisterKnownEventTypes(typeof(AccountEvents.V1.RoomBooked).Assembly);
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()

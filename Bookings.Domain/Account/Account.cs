@@ -1,5 +1,5 @@
 using Eventuous;
-using static Account.Domain.Account.BookingEvents;
+using static Account.Domain.Account.AccountEvents;
 using static Account.Domain.Services;
 
 namespace Account.Domain.Account;

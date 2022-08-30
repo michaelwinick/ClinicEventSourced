@@ -1,7 +1,7 @@
 using Eventuous.Projections.MongoDB;
 using Eventuous.Subscriptions.Context;
 using MongoDB.Driver;
-using static Account.Domain.Account.BookingEvents;
+using static Account.Domain.Account.AccountEvents;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 

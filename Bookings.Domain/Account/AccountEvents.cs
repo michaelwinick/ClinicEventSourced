@@ -3,7 +3,7 @@ using NodaTime;
 
 namespace Account.Domain.Account;
 
-public static class BookingEvents
+public static class AccountEvents
 {
     public static class V1
     {
