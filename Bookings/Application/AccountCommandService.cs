@@ -1,3 +1,4 @@
+using Account.Domain.Bookings;
 using Bookings.Domain;
 using Bookings.Domain.Bookings;
 using Eventuous;
@@ -6,9 +7,9 @@ using static Account.Application.AccountCommands;
 
 namespace Account.Application;
 
-public class BookingsCommandService : ApplicationService<Bookings.Domain.Bookings.Account, BookingState, BookingId>
+public class AccountCommandService : ApplicationService<Domain.Bookings.Account, AccountState, BookingId>
 {
-    public BookingsCommandService(IAggregateStore store, Services.IsRoomAvailable isRoomAvailable) : base(store)
+    public AccountCommandService(IAggregateStore store, Services.IsRoomAvailable isRoomAvailable) : base(store)
     {
         OnNewAsync<StartCreatingPersonalAccount>(
             cmd => new BookingId(cmd.BookingId),

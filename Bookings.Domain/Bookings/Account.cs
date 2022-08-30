@@ -1,10 +1,12 @@
+using Bookings.Domain;
+using Bookings.Domain.Bookings;
 using Eventuous;
 using static Bookings.Domain.Bookings.BookingEvents;
 using static Bookings.Domain.Services;
 
-namespace Bookings.Domain.Bookings;
+namespace Account.Domain.Bookings;
 
-public class Account : Aggregate<BookingState> {
+public class Account : Aggregate<AccountState> {
     public async Task BookRoom(
         BookingId       bookingId,
         string          guestId,

@@ -1,10 +1,11 @@
 using System.Collections.Immutable;
+using Bookings.Domain;
 using Eventuous;
 using static Bookings.Domain.Bookings.BookingEvents;
 
-namespace Bookings.Domain.Bookings;
+namespace Account.Domain.Bookings;
 
-public record BookingState : AggregateState<BookingState> {
+public record AccountState : AggregateState<AccountState> {
     public string     GuestId     { get; init; }
     public RoomId     RoomId      { get; init; }
     public StayPeriod Period      { get; init; }
@@ -17,13 +18,13 @@ public record BookingState : AggregateState<BookingState> {
     internal bool HasPaymentBeenRecorded(string paymentId)
         => PaymentRecords.Any(x => x.PaymentId == paymentId);
 
-    public BookingState() {
+    public AccountState() {
         On<V1.RoomBooked>(HandleBooked);
         On<V1.PaymentRecorded>(HandlePayment);
         On<V1.BookingFullyPaid>((state, paid) => state with { Paid = true });
     }
 
-    static BookingState HandlePayment(BookingState state, V1.PaymentRecorded e)
+    static AccountState HandlePayment(AccountState state, V1.PaymentRecorded e)
         => state with {
             Outstanding = new Money { Amount = e.Outstanding, Currency = e.Currency },
             PaymentRecords = state.PaymentRecords.Add(
@@ -31,7 +32,7 @@ public record BookingState : AggregateState<BookingState> {
             )
         };
 
-    static BookingState HandleBooked(BookingState state, V1.RoomBooked booked)
+    static AccountState HandleBooked(AccountState state, V1.RoomBooked booked)
         => state with {
             RoomId = new RoomId(booked.RoomId),
             Period = new StayPeriod(booked.CheckInDate, booked.CheckOutDate),

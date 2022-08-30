@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Account.HttpApi.Bookings;
 
 [Route("/accounts")]
-public class CommandApi : CommandHttpApiBase<global::Bookings.Domain.Bookings.Account>
+public class CommandApi : CommandHttpApiBase<global::Account.Domain.Bookings.Account>
 {
-    public CommandApi(IApplicationService<global::Bookings.Domain.Bookings.Account> service) : base(service) { }
+    public CommandApi(IApplicationService<global::Account.Domain.Bookings.Account> service) : base(service) { }
 
     [HttpPost]
     [Route("startCreatingPersonalAccount")]
