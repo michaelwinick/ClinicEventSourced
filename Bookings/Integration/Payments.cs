@@ -1,4 +1,3 @@
-using Bookings.Domain.Bookings;
 using Eventuous;
 using static Account.Application.AccountCommands;
 using static Account.Integration.IntegrationEvents;
@@ -10,9 +9,9 @@ public class PaymentsIntegrationHandler : EventHandler
 {
     public static readonly StreamName Stream = new("PaymentsIntegration");
 
-    readonly IApplicationService<Domain.Bookings.Account> _applicationService;
+    readonly IApplicationService<Domain.Account.Account> _applicationService;
 
-    public PaymentsIntegrationHandler(IApplicationService<Domain.Bookings.Account> applicationService)
+    public PaymentsIntegrationHandler(IApplicationService<Domain.Account.Account> applicationService)
     {
         _applicationService = applicationService;
         On<BookingPaymentRecorded>(async ctx => await HandlePayment(ctx.Message, ctx.CancellationToken));

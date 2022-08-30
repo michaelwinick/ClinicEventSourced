@@ -1,11 +1,9 @@
 using System.Text.Json;
-using Account;
 using Account.Application;
 using Account.Application.Queries;
+using Account.Domain;
 using Account.Infrastructure;
 using Account.Integration;
-using Bookings.Domain;
-using Bookings.Domain.Bookings;
 using Eventuous;
 using Eventuous.Diagnostics.OpenTelemetry;
 using Eventuous.EventStore;
@@ -32,7 +30,7 @@ public static class Registrations
 
         services.AddEventStoreClient(configuration["EventStore:ConnectionString"]);
         services.AddAggregateStore<EsdbEventStore>();
-        services.AddApplicationService<AccountCommandService, Domain.Bookings.Account>();
+        services.AddApplicationService<AccountCommandService, Domain.Account.Account>();
 
         services.AddSingleton<Services.IsRoomAvailable>((id, period) => new ValueTask<bool>(true));
 

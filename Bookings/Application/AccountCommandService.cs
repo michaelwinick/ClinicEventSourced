@@ -1,20 +1,19 @@
-using Account.Domain.Bookings;
-using Bookings.Domain;
-using Bookings.Domain.Bookings;
+using Account.Domain;
+using Account.Domain.Account;
 using Eventuous;
 using NodaTime;
 using static Account.Application.AccountCommands;
 
 namespace Account.Application;
 
-public class AccountCommandService : ApplicationService<Domain.Bookings.Account, AccountState, BookingId>
+public class AccountCommandService : ApplicationService<Domain.Account.Account, AccountState, AccountId>
 {
     public AccountCommandService(IAggregateStore store, Services.IsRoomAvailable isRoomAvailable) : base(store)
     {
         OnNewAsync<StartCreatingPersonalAccount>(
-            cmd => new BookingId(cmd.BookingId),
+            cmd => new AccountId(cmd.BookingId),
             (booking, cmd, _) => booking.BookRoom(
-                new BookingId(cmd.BookingId),
+                new AccountId(cmd.BookingId),
                 cmd.GuestId,
                 new RoomId(cmd.RoomId),
                 new StayPeriod(LocalDate.FromDateTime(cmd.CheckInDate), LocalDate.FromDateTime(cmd.CheckOutDate)),
@@ -26,7 +25,7 @@ public class AccountCommandService : ApplicationService<Domain.Bookings.Account,
         );
 
         OnExisting<RecordPayment>(
-            cmd => new BookingId(cmd.BookingId),
+            cmd => new AccountId(cmd.BookingId),
             (booking, cmd) => booking.RecordPayment(
                 new Money(cmd.PaidAmount, cmd.Currency),
                 cmd.PaymentId,

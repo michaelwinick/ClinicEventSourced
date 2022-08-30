@@ -1,5 +1,4 @@
-using Account.Domain.Bookings;
-using Bookings.Domain.Bookings;
+using Account.Domain.Account;
 using Eventuous;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +15,7 @@ public class QueryApi : ControllerBase
     [Route("{id}")]
     public async Task<AccountState> GetBooking(string id, CancellationToken cancellationToken)
     {
-        var booking = await _store.Load<global::Account.Domain.Bookings.Account>(StreamName.For<global::Account.Domain.Bookings.Account>(id), cancellationToken);
+        var booking = await _store.Load<global::Account.Domain.Account.Account>(StreamName.For<global::Account.Domain.Account.Account>(id), cancellationToken);
         return booking.State;
     }
 }

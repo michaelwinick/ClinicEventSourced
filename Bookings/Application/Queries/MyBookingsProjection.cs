@@ -1,6 +1,6 @@
 using Eventuous.Projections.MongoDB;
 using MongoDB.Driver;
-using static Bookings.Domain.Bookings.BookingEvents;
+using static Account.Domain.Account.BookingEvents;
 
 namespace Account.Application.Queries;
 

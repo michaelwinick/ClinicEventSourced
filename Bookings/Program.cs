@@ -1,5 +1,5 @@
 using Account;
-using Bookings.Domain.Bookings;
+using Account.Domain.Account;
 using Eventuous;
 using Eventuous.AspNetCore;
 using Eventuous.Diagnostics.Logging;
