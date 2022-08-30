@@ -6,7 +6,7 @@ namespace Account.Domain.Account;
 
 public class Account : Aggregate<AccountState>
 {
-    public async Task BookRoom(
+    public async Task StartCreatingPersonalAccount(
         AccountId bookingId,
         string guestId,
         RoomId roomId,

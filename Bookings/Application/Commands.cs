@@ -3,7 +3,7 @@ namespace Account.Application;
 public static class AccountCommands
 {
     public record StartCreatingPersonalAccount(
-        string BookingId,
+        string AccountId,
         string GuestId,
         string RoomId,
         DateTime CheckInDate,

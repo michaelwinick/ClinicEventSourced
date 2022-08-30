@@ -11,9 +11,9 @@ public class AccountCommandService : ApplicationService<Domain.Account.Account, 
     public AccountCommandService(IAggregateStore store, Services.IsRoomAvailable isRoomAvailable) : base(store)
     {
         OnNewAsync<StartCreatingPersonalAccount>(
-            cmd => new AccountId(cmd.BookingId),
-            (booking, cmd, _) => booking.BookRoom(
-                new AccountId(cmd.BookingId),
+            cmd => new AccountId(cmd.AccountId),
+            (account, cmd, _) => account.StartCreatingPersonalAccount(
+                new AccountId(cmd.AccountId),
                 cmd.GuestId,
                 new RoomId(cmd.RoomId),
                 new StayPeriod(LocalDate.FromDateTime(cmd.CheckInDate), LocalDate.FromDateTime(cmd.CheckOutDate)),
