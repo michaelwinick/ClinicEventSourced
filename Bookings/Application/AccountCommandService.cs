@@ -11,26 +11,9 @@ public class AccountCommandService : ApplicationService<Domain.Account.Account, 
     public AccountCommandService(IAggregateStore store, Services.IsRoomAvailable isRoomAvailable) : base(store)
     {
         OnNewAsync<StartCreatingPersonalAccount>(
-            cmd => new AccountId(cmd.AccountId),
+            cmd => new AccountId(Guid.NewGuid().ToString()),
             (account, cmd, _) => account.StartCreatingPersonalAccount(
-                new AccountId(cmd.AccountId),
-                cmd.GuestId,
-                new RoomId(cmd.RoomId),
-                new StayPeriod(LocalDate.FromDateTime(cmd.CheckInDate), LocalDate.FromDateTime(cmd.CheckOutDate)),
-                new Money(cmd.BookingPrice, cmd.Currency),
-                new Money(cmd.PrepaidAmount, cmd.Currency),
-                DateTimeOffset.Now,
-                isRoomAvailable
-            )
-        );
-
-        OnExisting<RecordPayment>(
-            cmd => new AccountId(cmd.BookingId),
-            (booking, cmd) => booking.RecordPayment(
-                new Money(cmd.PaidAmount, cmd.Currency),
-                cmd.PaymentId,
-                cmd.PaidBy,
-                DateTimeOffset.Now
+                new AccountId(cmd.AccountId)
             )
         );
     }

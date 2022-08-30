@@ -7,17 +7,9 @@ public static class AccountEvents
 {
     public static class V1
     {
-        [EventType("V1.RoomBooked")]
-        public record RoomBooked(
-            string GuestId,
-            string RoomId,
-            LocalDate CheckInDate,
-            LocalDate CheckOutDate,
-            float BookingPrice,
-            float PrepaidAmount,
-            float OutstandingAmount,
-            string Currency,
-            DateTimeOffset BookingDate
+        [EventType("V1.PersonalAccountCreationStarted")]
+        public record PersonalAccountCreationStarted(
+            string AccountId
         );
 
         [EventType("V1.PaymentRecorded")]

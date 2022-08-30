@@ -14,20 +14,20 @@ public class PaymentsIntegrationHandler : EventHandler
     public PaymentsIntegrationHandler(IApplicationService<Domain.Account.Account> applicationService)
     {
         _applicationService = applicationService;
-        On<BookingPaymentRecorded>(async ctx => await HandlePayment(ctx.Message, ctx.CancellationToken));
+        //On<BookingPaymentRecorded>(async ctx => await HandlePayment(ctx.Message, ctx.CancellationToken));
     }
 
-    Task HandlePayment(BookingPaymentRecorded evt, CancellationToken cancellationToken)
-        => _applicationService.Handle(
-            new RecordPayment(
-                evt.BookingId,
-                evt.Amount,
-                evt.Currency,
-                evt.PaymentId,
-                ""
-            ),
-            cancellationToken
-        );
+    //Task HandlePayment(BookingPaymentRecorded evt, CancellationToken cancellationToken)
+    //    => _applicationService.Handle(
+    //        new RecordPayment(
+    //            evt.BookingId,
+    //            evt.Amount,
+    //            evt.Currency,
+    //            evt.PaymentId,
+    //            ""
+    //        ),
+    //        cancellationToken
+    //    );
 }
 
 static class IntegrationEvents

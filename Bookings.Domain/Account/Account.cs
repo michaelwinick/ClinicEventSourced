@@ -1,4 +1,6 @@
 using Eventuous;
+using NodaTime;
+using System.Diagnostics;
 using static Account.Domain.Account.AccountEvents;
 using static Account.Domain.Services;
 
@@ -6,76 +8,14 @@ namespace Account.Domain.Account;
 
 public class Account : Aggregate<AccountState>
 {
-    public async Task StartCreatingPersonalAccount(
-        AccountId bookingId,
-        string guestId,
-        RoomId roomId,
-        StayPeriod period,
-        Money price,
-        Money prepaid,
-        DateTimeOffset bookedAt,
-        IsRoomAvailable isRoomAvailable
-    )
+    public Task StartCreatingPersonalAccount(AccountId accountId)
     {
         EnsureDoesntExist();
-        await EnsureRoomAvailable(roomId, period, isRoomAvailable);
-
-        var outstanding = price - prepaid;
-
+        
         Apply(
-            new V1.RoomBooked(
-                guestId,
-                roomId,
-                period.CheckIn,
-                period.CheckOut,
-                price.Amount,
-                prepaid.Amount,
-                outstanding.Amount,
-                price.Currency,
-                bookedAt
-            )
+            new V1.PersonalAccountCreationStarted(accountId)
         );
 
-        MarkFullyPaidIfNecessary(bookedAt);
-    }
-
-    public void RecordPayment(
-        Money paid,
-        string paymentId,
-        string paidBy,
-        DateTimeOffset paidAt
-    )
-    {
-        EnsureExists();
-
-        if (State.HasPaymentBeenRecorded(paymentId)) return;
-
-        var outstanding = State.Outstanding - paid;
-
-        Apply(
-            new V1.PaymentRecorded(
-                paid.Amount,
-                outstanding.Amount,
-                paid.Currency,
-                paymentId,
-                paidBy,
-                paidAt
-            )
-        );
-
-        MarkFullyPaidIfNecessary(paidAt);
-    }
-
-    void MarkFullyPaidIfNecessary(DateTimeOffset when)
-    {
-        if (State.Outstanding.Amount != 0) return;
-
-        Apply(new V1.BookingFullyPaid(when));
-    }
-
-    static async Task EnsureRoomAvailable(RoomId roomId, StayPeriod period, IsRoomAvailable isRoomAvailable)
-    {
-        var roomAvailable = await isRoomAvailable(roomId, period);
-        if (!roomAvailable) throw new DomainException("Room not available");
+        return Task.CompletedTask;
     }
 }

@@ -1,20 +1,14 @@
+using Account.Domain.Account;
+
 namespace Account.Application;
 
 public static class AccountCommands
 {
     public record StartCreatingPersonalAccount(
-        string AccountId,
-        string GuestId,
-        string RoomId,
-        DateTime CheckInDate,
-        DateTime CheckOutDate,
-        float BookingPrice,
-        float PrepaidAmount,
-        string Currency,
-        DateTimeOffset BookingDate
+        string AccountId
     );
 
-    public record RecordPayment(string BookingId, float PaidAmount, string Currency, string PaymentId, string PaidBy);
+    //public record RecordPayment(string BookingId, float PaidAmount, string Currency, string PaymentId, string PaidBy);
 
     public class AddPersonalAccountInformation
     {
