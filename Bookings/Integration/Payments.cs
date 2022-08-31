@@ -9,9 +9,9 @@ public class PaymentsIntegrationHandler : EventHandler
 {
     public static readonly StreamName Stream = new("PaymentsIntegration");
 
-    readonly IApplicationService<Domain.Account.Account> _applicationService;
+    readonly IApplicationService<Domain.Account> _applicationService;
 
-    public PaymentsIntegrationHandler(IApplicationService<Domain.Account.Account> applicationService)
+    public PaymentsIntegrationHandler(IApplicationService<Domain.Account> applicationService)
     {
         _applicationService = applicationService;
         //On<BookingPaymentRecorded>(async ctx => await HandlePayment(ctx.Message, ctx.CancellationToken));

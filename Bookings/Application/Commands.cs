@@ -1,5 +1,3 @@
-using Account.Domain.Account;
-
 namespace Account.Application;
 
 public static class AccountCommands
@@ -8,9 +6,9 @@ public static class AccountCommands
         string AccountId
     );
 
-    //public record RecordPayment(string BookingId, float PaidAmount, string Currency, string PaymentId, string PaidBy);
-
-    public class AddPersonalAccountInformation
-    {
-    }
+    public record AddPersonalAccountInformation(
+        string AccountId,
+        string FirstName,
+        string LastName,
+        string Dob);
 }

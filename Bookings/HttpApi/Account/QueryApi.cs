@@ -1,4 +1,4 @@
-using Account.Domain.Account;
+using Account.Domain;
 using Eventuous;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +15,7 @@ public class QueryApi : ControllerBase
     [Route("{id}")]
     public async Task<AccountState> GetAccount(string id, CancellationToken cancellationToken)
     {
-        var account = await _store.Load<Domain.Account.Account>(StreamName.For<Domain.Account.Account>(id), cancellationToken);
+        var account = await _store.Load<Domain.Account>(StreamName.For<Domain.Account>(id), cancellationToken);
         return account.State;
     }
 }

@@ -30,7 +30,7 @@ public static class Registrations
 
         services.AddEventStoreClient(configuration["EventStore:ConnectionString"]);
         services.AddAggregateStore<EsdbEventStore>();
-        services.AddApplicationService<AccountCommandService, Domain.Account.Account>();
+        services.AddApplicationService<AccountCommandService, Domain.Account>();
 
         services.AddSingleton<Services.IsRoomAvailable>((id, period) => new ValueTask<bool>(true));
 

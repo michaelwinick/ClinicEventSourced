@@ -1,5 +1,5 @@
 using Eventuous;
 
-namespace Account.Domain.Account;
+namespace Account.Domain;
 
 public record AccountId(string Value) : AggregateId(Value);

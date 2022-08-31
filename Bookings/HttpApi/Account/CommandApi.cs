@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Account.HttpApi.Account;
 
 [Route("/accounts")]
-public class CommandApi : CommandHttpApiBase<Domain.Account.Account>
+public class CommandApi : CommandHttpApiBase<Domain.Account>
 {
-    public CommandApi(IApplicationService<Domain.Account.Account> service) : base(service) { }
+    public CommandApi(IApplicationService<Domain.Account> service) : base(service) { }
 
     [HttpPost]
     [Route("startCreatingPersonalAccount")]

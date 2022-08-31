@@ -1,5 +1,5 @@
 using Account;
-using Account.Domain.Account;
+using Account.Domain;
 using Eventuous;
 using Eventuous.AspNetCore;
 using Eventuous.Diagnostics.Logging;
@@ -7,6 +7,7 @@ using NodaTime;
 using NodaTime.Serialization.SystemTextJson;
 using Serilog;
 using Serilog.Events;
+using static Account.Domain.Account;
 
 TypeMap.RegisterKnownEventTypes(typeof(AccountEvents.V1.PersonalAccountCreationStarted).Assembly);
 
