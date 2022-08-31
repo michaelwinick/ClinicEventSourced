@@ -7,18 +7,17 @@ namespace Account.Domain;
 
 public class Account : Aggregate<AccountState>
 {
-    public Task StartCreatingPersonalAccount(AccountId accountId)
+    public void StartCreatingPersonalAccount(AccountId accountId)
     {
         EnsureDoesntExist();
 
         Apply(
-            new AccountEvents.V1.PersonalAccountCreationStarted(accountId, "Started", "Pumper")
+            new AccountEvents.V1.PersonalAccountCreationStarted(
+                accountId, "Started", "Pumper")
         );
-
-        return Task.CompletedTask;
     }
 
-    public Task AddPersonalAccountInformation(
+    public void AddPersonalAccountInformation(
         AccountId accountId,
         string firstName,
         string lastName,
@@ -30,7 +29,5 @@ public class Account : Aggregate<AccountState>
             new AccountEvents.V1.PersonalAccountInformationAdded(
                 accountId, firstName, lastName, dob, "InformationAdded")
         );
-
-        return Task.CompletedTask;
     }
 }

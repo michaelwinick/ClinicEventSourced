@@ -9,16 +9,16 @@ public class AccountCommandService : ApplicationService<Domain.Account, AccountS
 {
     public AccountCommandService(IAggregateStore store) : base(store)
     {
-        OnNewAsync<StartCreatingPersonalAccount>(
+        OnNew<StartCreatingPersonalAccount>(
             cmd => new AccountId(cmd.AccountId),
-            (account, cmd, _) => account.StartCreatingPersonalAccount(
+            (account, cmd) => account.StartCreatingPersonalAccount(
                 new AccountId(cmd.AccountId)
             )
         );
 
-        OnExistingAsync<AddPersonalAccountInformation>(
+        OnExisting<AddPersonalAccountInformation>(
             cmd => new AccountId(cmd.AccountId),
-            (account, cmd, _) => account.AddPersonalAccountInformation(
+            (account, cmd) => account.AddPersonalAccountInformation(
                 new AccountId(cmd.AccountId),
                 cmd.FirstName,
                 cmd.LastName,
