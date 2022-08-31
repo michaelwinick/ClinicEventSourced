@@ -10,13 +10,22 @@ public record AccountState : AggregateState<AccountState>
     public string Dob { get; set; }
     public string LastName { get; set; }
 
+    public string TermsOfUse { get; set; }
+    public string HealthDataNotice { get; set; }
+    public string SecurityAnswer { get; set; }
+    public string SecurityQuestion { get; set; }
+    public string Password { get; set; }
+    public string Email { get; set; }
+
     public string AccountType { get; set; }
-    public string CurrentState { get; set; } 
+    public string CurrentState { get; set; }
+
 
     public AccountState()
     {
         On<AccountEvents.V1.PersonalAccountCreationStarted>(HandleAccountCreation);
         On<AccountEvents.V1.PersonalAccountInformationAdded>(HandleAccountInformationAdded);
+        On<AccountEvents.V1.PersonalAccountCreated>(HandleAccountCreated);
 
     }
 
@@ -37,5 +46,17 @@ public record AccountState : AggregateState<AccountState>
             Dob = e.Dob,
             CurrentState = e.State
         };
-}
 
+    static AccountState HandleAccountCreated(AccountState state,
+        AccountEvents.V1.PersonalAccountCreated e)
+        => state with
+        {
+            Email = e.Email,
+            Password = e.Password,
+            SecurityQuestion = e.SecurityQuestion,
+            SecurityAnswer = e.SecurityAnswer,
+            HealthDataNotice = e.HealthDataNotice,
+            TermsOfUse = e.TermsOfUse,
+            CurrentState = e.State
+        };
+}

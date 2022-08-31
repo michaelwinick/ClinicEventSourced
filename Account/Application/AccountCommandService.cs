@@ -25,5 +25,18 @@ public class AccountCommandService : ApplicationService<Domain.Account, AccountS
                 cmd.Dob
             )
         );
+
+        OnExisting<CompletePersonalAccount>(
+            cmd => new AccountId(cmd.AccountId),
+            (account, cmd) => account.CompletePersonalAccount(
+                new AccountId(cmd.AccountId),
+                cmd.Email,
+                cmd.Password,
+                cmd.SecurityQuestion,
+                cmd.SecurityAnswer,
+                cmd.HealthDataNotice,
+                cmd.TermsOfUse
+            )
+        );
     }
 }

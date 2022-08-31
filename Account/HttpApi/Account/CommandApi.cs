@@ -24,7 +24,7 @@ public class CommandApi : CommandHttpApiBase<Domain.Account>
 
     [HttpPost]
     [Route("completePersonalAccount")]
-    public Task<ActionResult<Result>> CompletePersonalAccount([FromBody] AccountCommands.StartCreatingPersonalAccount cmd, CancellationToken cancellationToken)
+    public Task<ActionResult<Result>> CompletePersonalAccount([FromBody] AccountCommands.CompletePersonalAccount cmd, CancellationToken cancellationToken)
         => Handle(cmd, cancellationToken);
 
 

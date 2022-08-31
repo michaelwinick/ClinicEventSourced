@@ -21,5 +21,16 @@ public static class AccountEvents
             string LastName, 
             string Dob, 
             string State);
+
+        [EventType("V1.PersonalAccountCreated")]
+        public record PersonalAccountCreated(
+            string AccountId,
+            string Email, 
+            string Password,
+            string SecurityQuestion,
+            string SecurityAnswer,
+            string HealthDataNotice,
+            string TermsOfUse,
+            string State);
     }
 }
