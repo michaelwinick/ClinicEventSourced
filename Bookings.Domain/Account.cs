@@ -12,7 +12,7 @@ public class Account : Aggregate<AccountState>
         EnsureDoesntExist();
 
         Apply(
-            new AccountEvents.V1.PersonalAccountCreationStarted(accountId)
+            new AccountEvents.V1.PersonalAccountCreationStarted(accountId, "Started", "Pumper")
         );
 
         return Task.CompletedTask;
@@ -28,7 +28,7 @@ public class Account : Aggregate<AccountState>
 
         Apply(
             new AccountEvents.V1.PersonalAccountInformationAdded(
-                accountId, firstName, lastName, dob)
+                accountId, firstName, lastName, dob, "InformationAdded")
         );
 
         return Task.CompletedTask;

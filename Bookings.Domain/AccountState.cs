@@ -10,7 +10,8 @@ public record AccountState : AggregateState<AccountState>
     public string Dob { get; set; }
     public string LastName { get; set; }
 
-
+    public string AccountType { get; set; }
+    public string CurrentState { get; set; } 
 
     public AccountState()
     {
@@ -22,7 +23,9 @@ public record AccountState : AggregateState<AccountState>
     static AccountState HandleAccountCreation(AccountState state, AccountEvents.V1.PersonalAccountCreationStarted e)
         => state with
         {
-            AccountId = e.AccountId
+            AccountId = e.AccountId,
+            CurrentState = e.State,
+            AccountType = e.AccountType
         };
 
     static AccountState HandleAccountInformationAdded(AccountState state,
@@ -31,7 +34,8 @@ public record AccountState : AggregateState<AccountState>
         {
             FirstName = e.FirstName,
             LastName = e.LastName,
-            Dob = e.Dob
+            Dob = e.Dob,
+            CurrentState = e.State
         };
 }
 
