@@ -1,7 +1,4 @@
 using Eventuous;
-using NodaTime;
-using System.Diagnostics;
-using static Account.Domain.Services;
 
 namespace Account.Domain;
 

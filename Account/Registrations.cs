@@ -32,9 +32,9 @@ public static class Registrations
         services.AddAggregateStore<EsdbEventStore>();
         services.AddApplicationService<AccountCommandService, Domain.Account>();
 
-        services.AddSingleton<Services.IsRoomAvailable>((id, period) => new ValueTask<bool>(true));
+        //services.AddSingleton<Services.IsRoomAvailable>((id, period) => new ValueTask<bool>(true));
 
-        services.AddSingleton<Services.ConvertCurrency>((from, currency) => new Money(from.Amount * 2, currency));
+        //services.AddSingleton<Services.ConvertCurrency>((from, currency) => new Money(from.Amount * 2, currency));
 
         services.AddSingleton(Mongo.ConfigureMongo(configuration));
         services.AddCheckpointStore<MongoCheckpointStore>();
