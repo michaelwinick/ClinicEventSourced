@@ -21,6 +21,6 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Bookings.Domain\Account.Domain.csproj" />
+      <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
     </ItemGroup>
 </Project>
