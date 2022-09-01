@@ -54,13 +54,13 @@ public static class Registrations
             );
 
         // PersonalAccountCreatedIntegration event Subscriber
-        services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
-            "PaymentIntegration5",
-            builder => builder
-                .Configure(x => x.StreamName = PersonalAccountCreatedIntegrationHandler.Stream)
-                .UseCheckpointStore<MongoCheckpointStore>()
-                .AddEventHandler<PersonalAccountCreatedIntegrationHandler>()
-         );
+        //services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
+        //    "PaymentIntegration5",
+        //    builder => builder
+        //        .Configure(x => x.StreamName = PersonalAccountCreatedIntegrationHandler.Stream)
+        //        .UseCheckpointStore<MongoCheckpointStore>()
+        //        .AddEventHandler<PersonalAccountCreatedIntegrationHandler>()
+        // );
     }
 
     public static void AddOpenTelemetry(this IServiceCollection services)

@@ -1,7 +1,3 @@
-using Clinic.Application;
-using Clinic.Domain;
-using Clinic.Infrastructure;
-using Clinic.Integration;
 using Eventuous.Diagnostics.OpenTelemetry;
 using Eventuous.EventStore;
 using Eventuous.EventStore.Producers;
@@ -11,8 +7,11 @@ using Eventuous.Projections.MongoDB;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Pumper.Application;
+using Pumper.Infrastructure;
+using Pumper.Integration;
 
-namespace Clinic;
+namespace Pumper;
 
 public static class Registrations
 {
@@ -20,16 +19,19 @@ public static class Registrations
     {
         services.AddEventStoreClient(configuration["EventStore:ConnectionString"]);
         services.AddAggregateStore<EsdbEventStore>();
-        services.AddApplicationService<CommandService, Payment>();
+        services.AddApplicationService<CommandService, Domain.Pumper>();
         services.AddSingleton(Mongo.ConfigureMongo(configuration));
         services.AddCheckpointStore<MongoCheckpointStore>();
         services.AddEventProducer<EventStoreProducer>();
 
-        services
-            .AddGateway<AllStreamSubscription, AllStreamSubscriptionOptions, EventStoreProducer>(
-                "IntegrationSubscription",
-                PaymentsGateway.Transform
-            );
+        // PersonalAccountCreatedIntegration event Subscriber
+        services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
+            "PaymentIntegration",
+            builder => builder
+                .Configure(x => x.StreamName = IntegrationHandler.Stream)
+                .UseCheckpointStore<MongoCheckpointStore>()
+                .AddEventHandler<IntegrationHandler>()
+        );
     }
 
     public static void AddOpenTelemetry(this IServiceCollection services)

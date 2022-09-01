@@ -1,9 +1,10 @@
+using Clinic.Domain;
 using Eventuous;
-using static Clinic.Domain.PaymentEvents;
+using static Pumper.Domain.PumperEvents;
 
-namespace Clinic.Domain;
+namespace Pumper.Domain;
 
-public class Payment : Aggregate<PaymentState>
+public class Pumper : Aggregate<PumperState>
 {
     public void ProcessPayment(
         PaymentId paymentId, string bookingId, Money amount, string method, string provider
@@ -11,12 +12,12 @@ public class Payment : Aggregate<PaymentState>
         => Apply(new PaymentRecorded(paymentId, bookingId, amount.Amount, amount.Currency, method, provider));
 }
 
-public record PaymentState : AggregateState<PaymentState>
+public record PumperState : AggregateState<PumperState>
 {
     public string BookingId { get; init; } = null!;
     public float Amount { get; init; }
 
-    public PaymentState()
+    public PumperState()
     {
         On<PaymentRecorded>(
             (state, recorded) => state with

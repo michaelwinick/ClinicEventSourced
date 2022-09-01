@@ -1,8 +1,8 @@
 using Eventuous;
 
-namespace Clinic.Domain;
+namespace Pumper.Domain;
 
-public static class PaymentEvents
+public static class PumperEvents
 {
     [EventType("PaymentRecorded")]
     public record PaymentRecorded(

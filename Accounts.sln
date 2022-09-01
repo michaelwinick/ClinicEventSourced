@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pumper", "Pumper\Pumper.csproj", "{99689DB8-0E0E-4657-9181-8260C2B1F07A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pumper2", "Pumper\Pumper2.csproj", "{99689DB8-0E0E-4657-9181-8260C2B1F07A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account", "Account\Account.csproj", "{7F8B6CFD-BD68-46C4-9AA8-E10A3EB933D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account.Domain", "Account.Domain\Account.Domain.csproj", "{2C9A0F0B-AF46-4202-A60E-F48283D4A947}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinic", "Clinic\Clinic.csproj", "{FB6074BB-E752-4F73-A9F7-559A9BB70EDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pumper", "Clinic\Pumper.csproj", "{FB6074BB-E752-4F73-A9F7-559A9BB70EDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

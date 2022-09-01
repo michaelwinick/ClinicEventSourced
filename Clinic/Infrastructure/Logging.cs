@@ -1,7 +1,7 @@
 using Serilog;
 using Serilog.Events;
 
-namespace Clinic.Infrastructure;
+namespace Pumper.Infrastructure;
 
 public static class Logging
 {

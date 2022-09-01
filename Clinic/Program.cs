@@ -1,8 +1,7 @@
-using Clinic;
-using Clinic.Domain;
-using Clinic.Infrastructure;
 using Eventuous;
 using Eventuous.AspNetCore;
+using Pumper;
+using Pumper.Infrastructure;
 using Serilog;
 
 TypeMap.RegisterKnownEventTypes();
@@ -27,7 +26,7 @@ app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 // Here we discover commands by their annotations
 // app.MapDiscoveredCommands();
-app.MapDiscoveredCommands<Payment>();
+app.MapDiscoveredCommands<Pumper.Domain.Pumper>();
 
 app.UseSwaggerUI();
 

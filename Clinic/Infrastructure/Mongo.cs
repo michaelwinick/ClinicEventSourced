@@ -1,7 +1,7 @@
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Extensions.DiagnosticSources;
 
-namespace Clinic.Infrastructure;
+namespace Pumper.Infrastructure;
 
 public static class Mongo
 {
