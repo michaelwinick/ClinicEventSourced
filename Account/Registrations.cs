@@ -37,13 +37,15 @@ public static class Registrations
         services.AddSingleton(Mongo.ConfigureMongo(configuration));
         services.AddCheckpointStore<MongoCheckpointStore>();
 
+        // Read Model based on PersonalAccountCreationStarted, PersonalAccountInformationAdded, PersonalAccountCreated
         services.AddSubscription<AllStreamSubscription, AllStreamSubscriptionOptions>(
-            "BookingsProjections",
+            "AccountProjections",
             builder => builder
                 .UseCheckpointStore<MongoCheckpointStore>()
                 .AddEventHandler<AccountStateProjection>()
         );
 
+        // Gateway from PersonalAccountCreated event to PersonalAccountCreatedIntegration event
         services.AddEventProducer<EventStoreProducer>();
         services
             .AddGateway<AllStreamSubscription, AllStreamSubscriptionOptions, EventStoreProducer>(
@@ -51,12 +53,13 @@ public static class Registrations
                 AccountGateway.Transform
             );
 
+        // PersonalAccountCreatedIntegration event Subscriber
         services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
             "PaymentIntegration5",
             builder => builder
-                .Configure(x => x.StreamName = PersonalAccountCreatedHandler.Stream)
+                .Configure(x => x.StreamName = PersonalAccountCreatedIntegrationHandler.Stream)
                 .UseCheckpointStore<MongoCheckpointStore>()
-                .AddEventHandler<PersonalAccountCreatedHandler>()
+                .AddEventHandler<PersonalAccountCreatedIntegrationHandler>()
          );
     }
 
