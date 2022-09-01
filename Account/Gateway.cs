@@ -1,21 +1,21 @@
-using Clinic.Domain;
+using Account.Domain;
 using Eventuous;
 using Eventuous.Gateway;
 using Eventuous.Subscriptions.Context;
-using static Clinic.Integration.IntegrationEvents;
 
 namespace Clinic.Integration;
 
 public static class PaymentsGateway
 {
-    static readonly StreamName Stream = new("Account.Integration");
+    static readonly StreamName Stream = new("PaymentsIntegration");
 
     public static ValueTask<GatewayMessage[]> Transform(IMessageConsumeContext original)
     {
-        var result = original.Message is PaymentEvents.PaymentRecorded evt
+        var result = original.Message is AccountEvents.V1.PersonalAccountCreated evt
             ? new GatewayMessage(
                 Stream,
-                new BookingPaymentRecorded(evt.PaymentId, evt.BookingId, evt.Amount, evt.Currency),
+                //new BookingPaymentRecorded(evt.PaymentId, evt.BookingId, evt.Amount, evt.Currency),
+                new object(),
                 new Metadata()
             )
             : null;

@@ -49,12 +49,19 @@ public static class Registrations
                 .WithPartitioningByStream(2)
         );
 
-        services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
-            "PaymentIntegration",
+        services.AddSubscription<AllStreamSubscription, AllStreamSubscriptionOptions>(
+            "AccountIntegration",
             builder => builder
-                .Configure(x => x.StreamName = PaymentsIntegrationHandler.Stream)
+                .UseCheckpointStore<MongoCheckpointStore>()
                 .AddEventHandler<PaymentsIntegrationHandler>()
         );
+
+        //services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
+        //    "Account-Integration",
+        //    builder => builder
+        //        .Configure(x => x.StreamName = PaymentsIntegrationHandler.Stream)
+        //        .AddEventHandler<PaymentsIntegrationHandler>()
+        //);
     }
 
     public static void AddOpenTelemetry(this IServiceCollection services)
