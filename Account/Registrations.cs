@@ -37,15 +37,12 @@ public static class Registrations
         services.AddSingleton(Mongo.ConfigureMongo(configuration));
         services.AddCheckpointStore<MongoCheckpointStore>();
 
-        //services.AddSubscription<AllStreamSubscription, AllStreamSubscriptionOptions>(
-        //    "BookingsProjections",
-        //    builder => builder
-        //        .Configure(cfg => cfg.ConcurrencyLimit = 2)
-        //        .UseCheckpointStore<MongoCheckpointStore>()
-        //        .AddEventHandler<BookingStateProjection>()
-        //        .AddEventHandler<MyBookingsProjection>()
-        //        .WithPartitioningByStream(2)
-        //);
+        services.AddSubscription<AllStreamSubscription, AllStreamSubscriptionOptions>(
+            "BookingsProjections",
+            builder => builder
+                .UseCheckpointStore<MongoCheckpointStore>()
+                .AddEventHandler<BookingStateProjection>()
+        );
 
         services.AddEventProducer<EventStoreProducer>();
         services
@@ -61,14 +58,6 @@ public static class Registrations
                 .UseCheckpointStore<MongoCheckpointStore>()
                 .AddEventHandler<PersonalAccountCreatedHandler>()
          );
-
-        //services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
-        //    "Account-Integration2",
-        //    builder => builder
-        //        .Configure(x => x.StreamName = new("Account-Integration"))
-        //        .AddEventHandler<PersonalAccountCreatedHandler>()
-        //);
-
     }
 
     public static void AddOpenTelemetry(this IServiceCollection services)

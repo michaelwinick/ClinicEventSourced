@@ -1,3 +1,4 @@
+using Account.Domain;
 using Eventuous.Projections.MongoDB;
 using Eventuous.Subscriptions.Context;
 using MongoDB.Driver;
@@ -6,40 +7,44 @@ using MongoDB.Driver;
 
 namespace Account.Application.Queries;
 
-public class BookingStateProjection : MongoProjection<BookingDocument>
+public class BookingStateProjection : MongoProjection<AccountDocument>
 {
     public BookingStateProjection(IMongoDatabase database) : base(database)
     {
-        //On<V1.PersonalAccountCreationStarted>(stream => stream.GetId(), HandleRoomBooked);
+        On<AccountEvents.V1.PersonalAccountCreationStarted>(stream => stream.GetId(), 
+            (ctx, update) =>
+            {
+                var evt = ctx.Message;
 
-    //    On<V1.PaymentRecorded>(
-    //        b => b
-    //            .UpdateOne
-    //            .DefaultId()
-    //            .Update((evt, update) =>
-    //                update.Set(x => x.Outstanding, evt.Outstanding)
-    //            )
-    //    );
+                return update.SetOnInsert(x => x.Id, ctx.Stream.GetId())
+                    .Set(x => x.AccountId, evt.AccountId)
+                    .Set(x => x.AccountType, evt.AccountType)
+                    .Set(x => x.State, evt.State);
+            });
 
-    //    On<V1.BookingFullyPaid>(b => b
-    //        .UpdateOne
-    //        .DefaultId()
-    //        .Update((_, update) => update.Set(x => x.Paid, true))
-    //    );
-    //}
+        On<AccountEvents.V1.PersonalAccountInformationAdded>(
+            account => account
+                .UpdateOne
+                .IdFromStream(stream => stream.GetId())
+                .Update((evt, update) => 
+                    update
+                        .Set(x => x.FirstName, evt.FirstName)
+                        .Set(x => x.LastName, evt.LastName)
+                        .Set(x => x.Dob, evt.Dob)
+                        .Set(x => x.State, evt.State)));
 
-    //static UpdateDefinition<BookingDocument> HandleRoomBooked(
-    //    IMessageConsumeContext<V1.PersonalAccountCreationStarted> ctx, UpdateDefinitionBuilder<BookingDocument> update
-    //)
-    //{
-    //    var evt = ctx.Message;
-
-    //    return update.SetOnInsert(x => x.Id, ctx.Stream.GetId())
-    //        .Set(x => x.GuestId, evt.GuestId)
-    //        .Set(x => x.RoomId, evt.RoomId)
-    //        .Set(x => x.CheckInDate, evt.CheckInDate)
-    //        .Set(x => x.CheckOutDate, evt.CheckOutDate)
-    //        .Set(x => x.BookingPrice, evt.BookingPrice)
-    //        .Set(x => x.Outstanding, evt.OutstandingAmount);
+        On<AccountEvents.V1.PersonalAccountCreated>(
+            account => account
+                .UpdateOne
+                .IdFromStream(stream => stream.GetId())
+                .Update((evt, update) =>
+                    update
+                        .Set(x => x.Email, evt.Email)
+                        .Set(x => x.Password, evt.Password)
+                        .Set(x => x.SecurityQuestion, evt.SecurityQuestion)
+                        .Set(x => x.SecurityAnswer, evt.SecurityAnswer)
+                        .Set(x => x.HealthDataNotice, evt.HealthDataNotice)
+                        .Set(x => x.TermsOfUser, evt.TermsOfUse)
+                        .Set(x => x.State, evt.State)));
     }
 }
