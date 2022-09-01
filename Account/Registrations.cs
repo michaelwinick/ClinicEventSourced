@@ -58,6 +58,7 @@ public static class Registrations
             "PaymentIntegration5",
             builder => builder
                 .Configure(x => x.StreamName = PersonalAccountCreatedHandler.Stream)
+                .UseCheckpointStore<MongoCheckpointStore>()
                 .AddEventHandler<PersonalAccountCreatedHandler>()
          );
 
