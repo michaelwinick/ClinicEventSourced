@@ -1,15 +1,14 @@
 using Account.Domain;
 using Eventuous.Projections.MongoDB;
-using Eventuous.Subscriptions.Context;
 using MongoDB.Driver;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Account.Application.Queries;
 
-public class BookingStateProjection : MongoProjection<AccountDocument>
+public class AccountStateProjection : MongoProjection<AccountDocument>
 {
-    public BookingStateProjection(IMongoDatabase database) : base(database)
+    public AccountStateProjection(IMongoDatabase database) : base(database)
     {
         On<AccountEvents.V1.PersonalAccountCreationStarted>(stream => stream.GetId(), 
             (ctx, update) =>

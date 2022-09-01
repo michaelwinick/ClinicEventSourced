@@ -41,7 +41,7 @@ public static class Registrations
             "BookingsProjections",
             builder => builder
                 .UseCheckpointStore<MongoCheckpointStore>()
-                .AddEventHandler<BookingStateProjection>()
+                .AddEventHandler<AccountStateProjection>()
         );
 
         services.AddEventProducer<EventStoreProducer>();
