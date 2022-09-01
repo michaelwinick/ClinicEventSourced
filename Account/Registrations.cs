@@ -7,7 +7,9 @@ using Account.Integration;
 using Eventuous;
 using Eventuous.Diagnostics.OpenTelemetry;
 using Eventuous.EventStore;
+using Eventuous.EventStore.Producers;
 using Eventuous.EventStore.Subscriptions;
+using Eventuous.Producers;
 using Eventuous.Projections.MongoDB;
 using Eventuous.Subscriptions.Registrations;
 using NodaTime;
@@ -49,18 +51,25 @@ public static class Registrations
                 .WithPartitioningByStream(2)
         );
 
-        services.AddSubscription<AllStreamSubscription, AllStreamSubscriptionOptions>(
-            "AccountIntegration",
-            builder => builder
-                .UseCheckpointStore<MongoCheckpointStore>()
-                .AddEventHandler<PaymentsIntegrationHandler>()
-        );
+        //services.AddSubscription<AllStreamSubscription, AllStreamSubscriptionOptions>(
+        //    "AccountIntegration",
+        //    builder => builder
+        //        .UseCheckpointStore<MongoCheckpointStore>()
+        //        .AddEventHandler<PersonalAccountCreatedHandler>()
+        //);
+
+        services.AddEventProducer<EventStoreProducer>();
+        services
+            .AddGateway<AllStreamSubscription, AllStreamSubscriptionOptions, EventStoreProducer>(
+                "Account-Integration",
+                PaymentsGateway.Transform
+            );
 
         //services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
         //    "Account-Integration",
         //    builder => builder
-        //        .Configure(x => x.StreamName = PaymentsIntegrationHandler.Stream)
-        //        .AddEventHandler<PaymentsIntegrationHandler>()
+        //        .Configure(x => x.StreamName = PersonalAccountCreatedHandler.Stream)
+        //        .AddEventHandler<PersonalAccountCreatedHandler>()
         //);
     }
 

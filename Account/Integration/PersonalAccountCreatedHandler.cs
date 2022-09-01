@@ -4,13 +4,13 @@ using EventHandler = Eventuous.Subscriptions.EventHandler;
 
 namespace Account.Integration;
 
-public class PaymentsIntegrationHandler : EventHandler
+public class PersonalAccountCreatedHandler : EventHandler
 {
     public static readonly StreamName Stream = new("Account-Integration");
 
     readonly IApplicationService<Domain.Account> _applicationService;
 
-    public PaymentsIntegrationHandler(IApplicationService<Domain.Account> applicationService)
+    public PersonalAccountCreatedHandler(IApplicationService<Domain.Account> applicationService)
     {
         _applicationService = applicationService;
         On<PersonalAccountCreated>(async ctx => await HandlePayment(ctx.Message, ctx.CancellationToken));
