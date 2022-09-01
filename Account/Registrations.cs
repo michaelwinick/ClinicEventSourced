@@ -34,43 +34,40 @@ public static class Registrations
         services.AddAggregateStore<EsdbEventStore>();
         services.AddApplicationService<AccountCommandService, Domain.Account>();
 
-        //services.AddSingleton<Services.IsRoomAvailable>((id, period) => new ValueTask<bool>(true));
-
-        //services.AddSingleton<Services.ConvertCurrency>((from, currency) => new Money(from.Amount * 2, currency));
-
         services.AddSingleton(Mongo.ConfigureMongo(configuration));
         services.AddCheckpointStore<MongoCheckpointStore>();
 
-        services.AddSubscription<AllStreamSubscription, AllStreamSubscriptionOptions>(
-            "BookingsProjections",
-            builder => builder
-                .Configure(cfg => cfg.ConcurrencyLimit = 2)
-                .UseCheckpointStore<MongoCheckpointStore>()
-                .AddEventHandler<BookingStateProjection>()
-                .AddEventHandler<MyBookingsProjection>()
-                .WithPartitioningByStream(2)
-        );
-
         //services.AddSubscription<AllStreamSubscription, AllStreamSubscriptionOptions>(
-        //    "AccountIntegration",
+        //    "BookingsProjections",
         //    builder => builder
+        //        .Configure(cfg => cfg.ConcurrencyLimit = 2)
         //        .UseCheckpointStore<MongoCheckpointStore>()
-        //        .AddEventHandler<PersonalAccountCreatedHandler>()
+        //        .AddEventHandler<BookingStateProjection>()
+        //        .AddEventHandler<MyBookingsProjection>()
+        //        .WithPartitioningByStream(2)
         //);
 
         services.AddEventProducer<EventStoreProducer>();
         services
             .AddGateway<AllStreamSubscription, AllStreamSubscriptionOptions, EventStoreProducer>(
                 "Account-Integration",
-                PaymentsGateway.Transform
+                AccountGateway.Transform
             );
 
+        services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
+            "PaymentIntegration5",
+            builder => builder
+                .Configure(x => x.StreamName = PersonalAccountCreatedHandler.Stream)
+                .AddEventHandler<PersonalAccountCreatedHandler>()
+         );
+
         //services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
-        //    "Account-Integration",
+        //    "Account-Integration2",
         //    builder => builder
-        //        .Configure(x => x.StreamName = PersonalAccountCreatedHandler.Stream)
+        //        .Configure(x => x.StreamName = new("Account-Integration"))
         //        .AddEventHandler<PersonalAccountCreatedHandler>()
         //);
+
     }
 
     public static void AddOpenTelemetry(this IServiceCollection services)

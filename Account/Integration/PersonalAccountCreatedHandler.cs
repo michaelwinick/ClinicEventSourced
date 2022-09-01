@@ -1,5 +1,5 @@
+using Account.Domain;
 using Eventuous;
-using static Account.Domain.AccountEvents.V1;
 using EventHandler = Eventuous.Subscriptions.EventHandler;
 
 namespace Account.Integration;
@@ -13,10 +13,10 @@ public class PersonalAccountCreatedHandler : EventHandler
     public PersonalAccountCreatedHandler(IApplicationService<Domain.Account> applicationService)
     {
         _applicationService = applicationService;
-        On<PersonalAccountCreated>(async ctx => await HandlePayment(ctx.Message, ctx.CancellationToken));
+        On<AccountEvents.V1.PersonalAccountCreatedIntegration>(async ctx => await HandlePayment(ctx.Message, ctx.CancellationToken));
     }
 
-    Task HandlePayment(PersonalAccountCreated evt, CancellationToken cancellationToken)
+    Task HandlePayment(AccountEvents.V1.PersonalAccountCreatedIntegration evt, CancellationToken cancellationToken)
     {
         return _applicationService.Handle(
             new object(),
@@ -24,3 +24,5 @@ public class PersonalAccountCreatedHandler : EventHandler
         );
     }
 }
+
+

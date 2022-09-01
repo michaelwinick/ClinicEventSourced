@@ -32,5 +32,8 @@ public static class AccountEvents
             string HealthDataNotice,
             string TermsOfUse,
             string State);
+
+        [EventType("V1.PersonalAccountCreatedIntegration")]
+        public record PersonalAccountCreatedIntegration(string AccountId);
     }
 }
