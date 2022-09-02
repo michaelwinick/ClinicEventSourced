@@ -26,7 +26,7 @@ public static class Registrations
 
         // PersonalAccountCreatedIntegration event Subscriber
         services.AddSubscription<StreamSubscription, StreamSubscriptionOptions>(
-            "PaymentIntegration",
+            "Account-Integration",
             builder => builder
                 .Configure(x => x.StreamName = IntegrationHandler.Stream)
                 .UseCheckpointStore<MongoCheckpointStore>()

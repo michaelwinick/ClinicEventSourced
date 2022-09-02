@@ -1,7 +1,4 @@
-using System.Text.Json.Serialization;
-using Clinic.Domain;
 using Eventuous;
-using Eventuous.AspNetCore.Web;
 using Pumper.Domain;
 
 namespace Pumper.Application;
@@ -10,11 +7,15 @@ public class CommandService : ApplicationService<Domain.Pumper, PumperState, Pum
 {
     public CommandService(IAggregateStore store) : base(store)
     {
+        PumperId? pumperId = null;
+
         OnNew<Commands.AddPumper>(
-            cmd => new PumperId(cmd.AccountId),
+            _ =>
+            {
+                pumperId = new PumperId(Guid.NewGuid().ToString());
+                return new PumperId(pumperId);
+            },
             (pumper, cmd) => pumper.AddPumper(
-                new PumperId(cmd.AccountId)
-            )
-        );
+                pumperId, cmd.AccountId));
     }
 }

@@ -4,10 +4,10 @@ namespace Pumper.Domain;
 
 public class Pumper : Aggregate<PumperState>
 {
-    public void AddPumper(PumperId pumperId)
+    public void AddPumper(PumperId? pumperId, string accountId)
     {
         EnsureDoesntExist();
-        Apply(new Events.V1.PumperAdded(pumperId));
+        Apply(new Events.V1.PumperAdded(pumperId.Value, accountId));
     }
 }
 
