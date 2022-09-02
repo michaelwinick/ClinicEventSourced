@@ -6,34 +6,15 @@ using Pumper.Domain;
 
 namespace Pumper.Application;
 
-public class CommandService : ApplicationService<Domain.Pumper, PumperState, PaymentId>
+public class CommandService : ApplicationService<Domain.Pumper, PumperState, PumperId>
 {
     public CommandService(IAggregateStore store) : base(store)
     {
-        //OnNew<PumperCommands.RecordPayment>(
-        //    cmd => new PaymentId(cmd.PaymentId),
-        //    (payment, cmd) => payment.ProcessPayment(
-        //        new PaymentId(cmd.PaymentId),
-        //        cmd.BookingId,
-        //        new Money(cmd.Amount, cmd.Currency),
-        //        cmd.Method,
-        //        cmd.Provider
-        //    )
-        //);
+        OnNew<Commands.AddPumper>(
+            cmd => new PumperId(cmd.AccountId),
+            (pumper, cmd) => pumper.AddPumper(
+                new PumperId(cmd.AccountId)
+            )
+        );
     }
-}
-
-// [AggregateCommands(typeof(Pumper))]
-public static class PumperCommands
-{
-    [HttpCommand]
-    public record RecordPayment(
-        string PaymentId,
-        string BookingId,
-        float Amount,
-        string Currency,
-        string Method,
-        string Provider,
-        [property: JsonIgnore] string PaidBy
-    );
 }

@@ -11,10 +11,10 @@ public static class AccountGateway
 
     public static ValueTask<GatewayMessage[]> Transform(IMessageConsumeContext original)
     {
-        var result = original.Message is AccountEvents.V1.PersonalAccountCreated evt
+        var result = original.Message is Events.V1.PersonalAccountCreated evt
             ? new GatewayMessage(
                 Stream,
-                new AccountEvents.V1.PersonalAccountCreatedIntegration(evt.AccountId),
+                new Events.V1.PersonalAccountCreatedIntegration(evt.AccountId),
                 new Metadata()
             )
             : null;

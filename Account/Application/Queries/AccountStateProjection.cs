@@ -10,7 +10,7 @@ public class AccountStateProjection : MongoProjection<AccountDocument>
 {
     public AccountStateProjection(IMongoDatabase database) : base(database)
     {
-        On<AccountEvents.V1.PersonalAccountCreationStarted>(stream => stream.GetId(), 
+        On<Events.V1.PersonalAccountCreationStarted>(stream => stream.GetId(), 
             (ctx, update) =>
             {
                 var evt = ctx.Message;
@@ -21,7 +21,7 @@ public class AccountStateProjection : MongoProjection<AccountDocument>
                     .Set(x => x.State, evt.State);
             });
 
-        On<AccountEvents.V1.PersonalAccountInformationAdded>(
+        On<Events.V1.PersonalAccountInformationAdded>(
             account => account
                 .UpdateOne
                 .IdFromStream(stream => stream.GetId())
@@ -32,7 +32,7 @@ public class AccountStateProjection : MongoProjection<AccountDocument>
                         .Set(x => x.Dob, evt.Dob)
                         .Set(x => x.State, evt.State)));
 
-        On<AccountEvents.V1.PersonalAccountCreated>(
+        On<Events.V1.PersonalAccountCreated>(
             account => account
                 .UpdateOne
                 .IdFromStream(stream => stream.GetId())

@@ -23,13 +23,13 @@ public record AccountState : AggregateState<AccountState>
 
     public AccountState()
     {
-        On<AccountEvents.V1.PersonalAccountCreationStarted>(HandleAccountCreation);
-        On<AccountEvents.V1.PersonalAccountInformationAdded>(HandleAccountInformationAdded);
-        On<AccountEvents.V1.PersonalAccountCreated>(HandleAccountCreated);
+        On<Events.V1.PersonalAccountCreationStarted>(HandleAccountCreation);
+        On<Events.V1.PersonalAccountInformationAdded>(HandleAccountInformationAdded);
+        On<Events.V1.PersonalAccountCreated>(HandleAccountCreated);
 
     }
 
-    static AccountState HandleAccountCreation(AccountState state, AccountEvents.V1.PersonalAccountCreationStarted e)
+    static AccountState HandleAccountCreation(AccountState state, Events.V1.PersonalAccountCreationStarted e)
         => state with
         {
             AccountId = e.AccountId,
@@ -38,7 +38,7 @@ public record AccountState : AggregateState<AccountState>
         };
 
     static AccountState HandleAccountInformationAdded(AccountState state,
-        AccountEvents.V1.PersonalAccountInformationAdded e)
+        Events.V1.PersonalAccountInformationAdded e)
         => state with
         {
             FirstName = e.FirstName,
@@ -48,7 +48,7 @@ public record AccountState : AggregateState<AccountState>
         };
 
     static AccountState HandleAccountCreated(AccountState state,
-        AccountEvents.V1.PersonalAccountCreated e)
+        Events.V1.PersonalAccountCreated e)
         => state with
         {
             Email = e.Email,

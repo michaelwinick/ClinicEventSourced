@@ -10,7 +10,7 @@ public class Account : Aggregate<AccountState>
         EnsureDoesntExist();
 
         Apply(
-            new AccountEvents.V1.PersonalAccountCreationStarted(
+            new Events.V1.PersonalAccountCreationStarted(
                 accountId, "Started", "Pumper")
         );
     }
@@ -24,7 +24,7 @@ public class Account : Aggregate<AccountState>
         EnsureExists();
 
         Apply(
-            new AccountEvents.V1.PersonalAccountInformationAdded(
+            new Events.V1.PersonalAccountInformationAdded(
                 accountId, firstName, lastName, dob, "InformationAdded")
         );
     }
@@ -41,7 +41,7 @@ public class Account : Aggregate<AccountState>
         EnsureExists();
 
         Apply(
-            new AccountEvents.V1.PersonalAccountCreated(
+            new Events.V1.PersonalAccountCreated(
                 accountId, email, password, securityQuestion, securityAnswer, healthDataNotice, termsOfUse, 
                 "PersonalAccountCreated")
         );

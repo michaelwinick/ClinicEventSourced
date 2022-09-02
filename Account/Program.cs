@@ -9,7 +9,7 @@ using Serilog;
 using Serilog.Events;
 using static Account.Domain.Account;
 
-TypeMap.RegisterKnownEventTypes(typeof(AccountEvents.V1.PersonalAccountCreationStarted).Assembly);
+TypeMap.RegisterKnownEventTypes(typeof(Events.V1.PersonalAccountCreationStarted).Assembly);
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
