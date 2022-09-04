@@ -70,7 +70,7 @@ public static class Registrations
             builder =>
             {
                 builder
-                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("bookings"))
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("accounts"))
                     .AddAspNetCoreInstrumentation()
                     .AddEventuous()
                     .AddEventuousSubscriptions()
@@ -87,7 +87,7 @@ public static class Registrations
                     .AddGrpcClientInstrumentation()
                     .AddEventuousTracing()
                     .AddMongoDBInstrumentation()
-                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("bookings"))
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("accounts"))
                     .SetSampler(new AlwaysOnSampler());
 
                 if (otelEnabled)

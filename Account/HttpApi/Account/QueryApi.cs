@@ -2,9 +2,9 @@ using Account.Domain;
 using Eventuous;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Account.HttpApi.Bookings;
+namespace Account.HttpApi.Account;
 
-[Route("/bookings")]
+[Route("/accounts")]
 public class QueryApi : ControllerBase
 {
     readonly IAggregateStore _store;

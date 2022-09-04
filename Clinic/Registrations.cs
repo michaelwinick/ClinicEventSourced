@@ -48,7 +48,7 @@ public static class Registrations
                 .AddAspNetCoreInstrumentation()
                 .AddGrpcClientInstrumentation()
                 .AddEventuousTracing()
-                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("payments"))
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("pumper"))
                 .SetSampler(new AlwaysOnSampler())
                 .AddZipkinExporter()
         );

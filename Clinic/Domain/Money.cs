@@ -1,6 +1,6 @@
 using Eventuous;
 
-namespace Clinic.Domain;
+namespace Pumper.Domain;
 
 public record Money
 {

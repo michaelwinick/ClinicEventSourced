@@ -10,7 +10,7 @@ public class CommandService : ApplicationService<Domain.Pumper, PumperState, Pum
         PumperId? pumperId = null;
 
         OnNew<Commands.AddPumper>(
-            _ =>
+            cmd =>
             {
                 pumperId = new PumperId(Guid.NewGuid().ToString());
                 return new PumperId(pumperId);
