@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Clinic_test</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.2.20220510" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Eventuous" Version="0.10.5" />
+    <PackageReference Include="NodaTime" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Users\mwinick\source\repos\eventuous4\src\Core\src\Eventuous\Eventuous.csproj" />
+    <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
+    <ProjectReference Include="..\test\Eventuous.TestHelpers\Eventuous.TestHelpers.csproj" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Reference Include="Eventuous.TestHelpers">
+      <HintPath>..\..\..\..\..\Users\mwinick\source\repos\eventuous4\test\Eventuous.TestHelpers\bin\Debug\net6.0\Eventuous.TestHelpers.dll</HintPath>
+    </Reference>
+  </ItemGroup>-->
+
+</Project>

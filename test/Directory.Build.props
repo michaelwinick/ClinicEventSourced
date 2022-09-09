@@ -1,0 +1,16 @@
+<Project>
+    <PropertyGroup>
+        <TargetFrameworks>net5.0;net6.0;netcoreapp3.1</TargetFrameworks>
+        <IsPackable>false</IsPackable>
+        <LangVersion>10</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RepoRoot>$([System.IO.Directory]::GetParent($(MSBuildThisFileDirectory)).Parent.FullName)</RepoRoot>
+        <CoreRoot>$(RepoRoot)\src\Core\src</CoreRoot>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="IsExternalInit" Version="1.0.2" PrivateAssets="All"/>
+        <Using Include="Eventuous"/>
+    </ItemGroup>
+</Project>
