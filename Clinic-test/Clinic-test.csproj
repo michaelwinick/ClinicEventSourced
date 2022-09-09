@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.17.0" />
     <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.2.20220510" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Users\mwinick\source\repos\eventuous4\src\Core\src\Eventuous\Eventuous.csproj" />
     <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
+    <ProjectReference Include="..\Account\Account.csproj" />
     <ProjectReference Include="..\test\Eventuous.TestHelpers\Eventuous.TestHelpers.csproj" />
   </ItemGroup>
 

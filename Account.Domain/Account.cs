@@ -11,7 +11,7 @@ public class Account : Aggregate<AccountState>
 
         Apply(
             new Events.V1.PersonalAccountCreationStarted(
-                accountId, "Started", "Pumper")
+                accountId, "Started", "Account")
         );
     }
 
