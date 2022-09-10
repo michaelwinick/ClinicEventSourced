@@ -24,13 +24,13 @@ public class UnitTest1 : NaiveFixture
     {
         var theAccountId = new AccountId(Guid.NewGuid().ToString());
 
-        var seedEvents = new List<object>
-        {
-            PersonalAccountCreationStarted(theAccountId),
-            PersonalAccountInformationAdded(theAccountId)
-        };
-
-        await SeedEventStoreWithEvents(seedEvents, GetStreamName(theAccountId));
+        await SeedEventStoreWithEvents(
+            new List<object>
+            {
+                PersonalAccountCreationStarted(theAccountId),
+                PersonalAccountInformationAdded(theAccountId)
+            }, 
+            GetStreamName(theAccountId));
 
         await Service.Handle(
             new AccountCommands.CompletePersonalAccount(
