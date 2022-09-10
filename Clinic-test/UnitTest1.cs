@@ -31,7 +31,7 @@ public class UnitTest1 : NaiveFixture
             PersonalAccountInformationAdded(theAccountId)
         };
 
-        await SeedEventStore(seedEvents, TheAccountStream(theAccountId));
+        await SeedEventStoreWithEvents(seedEvents, GetStreamName(theAccountId));
 
         await Service.Handle(
             new AccountCommands.CompletePersonalAccount(
@@ -44,7 +44,7 @@ public class UnitTest1 : NaiveFixture
                 "termsOfUse"),
             new CancellationToken());
 
-        var accountEvents = await ReadEventsFromStream(TheAccountStream(theAccountId));
+        var accountEvents = await ReadEventsFromStream(GetStreamName(theAccountId));
 
         accountEvents
             .Select(x => x.Payload)
@@ -53,7 +53,7 @@ public class UnitTest1 : NaiveFixture
                 ExpectedEvents(theAccountId).Select(x => x.Event));
     }
 
-    private async Task SeedEventStore(List<object> seedEvents, StreamName streamName)
+    private async Task SeedEventStoreWithEvents(List<object> seedEvents, StreamName streamName)
     {
         var streamEvents =
             seedEvents.Select(e =>
@@ -105,7 +105,6 @@ public class UnitTest1 : NaiveFixture
             accountId, "Started", "Pumper");
     }
 
-    private static StreamName TheAccountStream(string accountId) => new(GetStreamName(new AccountId(accountId)));
-
+    private static StreamName GetStreamName(string accountId) => new(GetStreamName(new AccountId(accountId)));
     private static StreamName GetStreamName(AccountId accountId) => new($"Account-{accountId}");
 }
