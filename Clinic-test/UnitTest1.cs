@@ -34,7 +34,7 @@ public class UnitTest1 : NaiveFixture
 
         await Service.Handle(
             new AccountCommands.CompletePersonalAccount(
-                PersonalAccountCreationStarted(theAccountId).AccountId,
+                theAccountId,
                 "email",
                 "password", 
                 "securityQuestion",
