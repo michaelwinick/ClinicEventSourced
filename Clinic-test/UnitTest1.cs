@@ -24,43 +24,25 @@ public class UnitTest1 : NaiveFixture
     [Fact]
     public async Task Test1()
     {
-        Events.V1.PersonalAccountCreationStarted ev1 = new(Guid.NewGuid().ToString(), "Started", "Pumper");
-        Events.V1.PersonalAccountInformationAdded ev2 = new(ev1.AccountId, "FirstName", "LastName", "1/6/65", "InformationAdded");
+        Events.V1.PersonalAccountCreationStarted ev1 = 
+            new(Guid.NewGuid().ToString(), "Started", "Pumper");
         
-        var streamName = new StreamName(GetStreamName(new AccountId(ev1.AccountId)));
+        Events.V1.PersonalAccountInformationAdded ev2 = 
+            new(ev1.AccountId, "FirstName", "LastName", "1/6/65", "InformationAdded");
 
-        var newEvents = new List<object>();
-
-        newEvents.Add(ev1);
-        newEvents.Add(ev2);
+        var expected = GenerateExpectedEvents(ev1);
         
-        var streamEvents = 
-            newEvents.Select(e => 
-                new StreamEvent(Guid.NewGuid(), e, new Metadata(), "", 0));
+        var theAccountStream = new StreamName(GetStreamName(new AccountId(ev1.AccountId)));
 
-        await EventStore.AppendEvents(
-            streamName,
-            ExpectedStreamVersion.NoStream, 
-            streamEvents.ToArray(),
-            default
-        );
-
-        var expected = new Change[] {
-            new(
-                new Events.V1.PersonalAccountCreationStarted(ev1.AccountId.ToString(), "Started", "Pumper"),
-                "V1.PersonalAccountCreationStarted"
-                ),
-            new(
-                new Events.V1.PersonalAccountInformationAdded(ev1.AccountId, "FirstName", "LastName", "1/6/65", "InformationAdded"),
-                "V1.PersonalAccountInformationAdded"
-                ),
-            new(
-                new Events.V1.PersonalAccountCreated(ev1.AccountId, "email", "password", "securityQuestion", "securityAnswer", "healthDataNotice", "termsOfUse", "PersonalAccountCreated"),
-                "V1.PersonalAccountCreated"
-                )
+        var seedEvents = new List<object>
+        {
+            ev1,
+            ev2
         };
 
-        var (accountState, success, enumerable) = await Service.Handle(
+        await SeedEventStore(seedEvents, theAccountStream);
+
+        await Service.Handle(
             new AccountCommands.CompletePersonalAccount(
                 ev1.AccountId,
                 "email",
@@ -71,13 +53,52 @@ public class UnitTest1 : NaiveFixture
                 "termsOfUse"),
             new CancellationToken());
 
-        var readEvents = await EventStore.ReadEvents(
+        var accountEvents = await ReadEventsFromStream(theAccountStream);
+
+        accountEvents
+            .Select(x => x.Payload)
+            .Should()
+            .BeEquivalentTo(expected.Select(x => x.Event));
+    }
+
+    private async Task SeedEventStore(List<object> seedEvents, StreamName streamName)
+    {
+        var streamEvents =
+            seedEvents.Select(e =>
+                new StreamEvent(Guid.NewGuid(), e, new Metadata(), "", 0));
+
+        await EventStore.AppendEvents(
+            streamName,
+            ExpectedStreamVersion.NoStream,
+            streamEvents.ToArray(),
+            default
+        );
+    }
+
+    private static Change[] GenerateExpectedEvents(Events.V1.PersonalAccountCreationStarted ev1)
+    {
+        return new Change[] {
+            new(
+                new Events.V1.PersonalAccountCreationStarted(ev1.AccountId.ToString(), "Started", "Pumper"),
+                "V1.PersonalAccountCreationStarted"
+            ),
+            new(
+                new Events.V1.PersonalAccountInformationAdded(ev1.AccountId, "FirstName", "LastName", "1/6/65", "InformationAdded"),
+                "V1.PersonalAccountInformationAdded"
+            ),
+            new(
+                new Events.V1.PersonalAccountCreated(ev1.AccountId, "email", "password", "securityQuestion", "securityAnswer", "healthDataNotice", "termsOfUse", "PersonalAccountCreated"),
+                "V1.PersonalAccountCreated"
+            )
+        };
+    }
+
+    private async Task<StreamEvent[]> ReadEventsFromStream(StreamName streamName)
+    {
+        return await EventStore.ReadEvents(
             streamName,
             StreamReadPosition.Start, 100,
             new CancellationToken());
-
-        readEvents.Select(x => x.Payload)
-            .Should().BeEquivalentTo(expected.Select(x => x.Event));
     }
 
     static StreamName GetStreamName(AccountId accountId) => new($"Account-{accountId}");
