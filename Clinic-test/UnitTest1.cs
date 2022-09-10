@@ -41,7 +41,7 @@ public class UnitTest1 : NaiveFixture
                 "securityAnswer",
                 "healthDataNotice",
                 "termsOfUse"),
-            new CancellationToken());
+            default);
 
         var accountEvents = await ReadEventsFromStream(GetStreamName(theAccountId));
 
