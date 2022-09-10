@@ -9,6 +9,8 @@ namespace Clinic_test;
 
 public class UnitTest1 : NaiveFixture
 {
+    AccountCommandService Service { get; }
+
     public UnitTest1()
     {
         var streamNameMap = new StreamNameMap();
@@ -17,13 +19,10 @@ public class UnitTest1 : NaiveFixture
         TypeMap.RegisterKnownEventTypes();
     }
 
-    AccountCommandService Service { get; }
-
-
     [Fact]
     public async Task Test1()
     {
-        var theAccountId = Guid.NewGuid().ToString();
+        var theAccountId = new AccountId(Guid.NewGuid().ToString());
 
         var seedEvents = new List<object>
         {
@@ -105,6 +104,5 @@ public class UnitTest1 : NaiveFixture
             accountId, "Started", "Pumper");
     }
 
-    private static StreamName GetStreamName(string accountId) => new(GetStreamName(new AccountId(accountId)));
     private static StreamName GetStreamName(AccountId accountId) => new($"Account-{accountId}");
 }
