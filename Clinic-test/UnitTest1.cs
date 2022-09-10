@@ -52,7 +52,7 @@ public class UnitTest1 : NaiveFixture
                 ExpectedEvents(theAccountId).Select(x => x.Event));
     }
 
-    private async Task SeedEventStoreWithEvents(List<object> seedEvents, StreamName streamName)
+    private async Task SeedEventStoreWithEvents(IEnumerable<object> seedEvents, StreamName streamName)
     {
         var streamEvents =
             seedEvents.Select(e =>

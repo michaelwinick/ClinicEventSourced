@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Eventuous;
 
 namespace Account.Domain;
