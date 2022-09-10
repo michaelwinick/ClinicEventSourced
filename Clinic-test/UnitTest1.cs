@@ -24,27 +24,27 @@ public class UnitTest1 : NaiveFixture
     [Fact]
     public async Task Test1()
     {
-        Events.V1.PersonalAccountCreationStarted ev1 = 
-            new(Guid.NewGuid().ToString(), "Started", "Pumper");
+        var event1 = new Events.V1.PersonalAccountCreationStarted(
+            Guid.NewGuid().ToString(), "Started", "Pumper");
         
-        Events.V1.PersonalAccountInformationAdded ev2 = 
-            new(ev1.AccountId, "FirstName", "LastName", "1/6/65", "InformationAdded");
+        var event2 = new Events.V1.PersonalAccountInformationAdded(
+                 event1.AccountId, "FirstName", "LastName", "1/6/65", "InformationAdded");
 
-        var expected = GenerateExpectedEvents(ev1);
+        var expected = GenerateExpectedEvents(event1);
         
-        var theAccountStream = new StreamName(GetStreamName(new AccountId(ev1.AccountId)));
+        var theAccountStream = TheAccountStream(event1);
 
         var seedEvents = new List<object>
         {
-            ev1,
-            ev2
+            event1,
+            event2
         };
 
         await SeedEventStore(seedEvents, theAccountStream);
 
         await Service.Handle(
             new AccountCommands.CompletePersonalAccount(
-                ev1.AccountId,
+                event1.AccountId,
                 "email",
                 "password", 
                 "securityQuestion",
@@ -60,6 +60,10 @@ public class UnitTest1 : NaiveFixture
             .Should()
             .BeEquivalentTo(expected.Select(x => x.Event));
     }
+
+    private static StreamName TheAccountStream(Events.V1.PersonalAccountCreationStarted event1) =>
+        new StreamName(GetStreamName(new AccountId(event1.AccountId)));
+    
 
     private async Task SeedEventStore(List<object> seedEvents, StreamName streamName)
     {
