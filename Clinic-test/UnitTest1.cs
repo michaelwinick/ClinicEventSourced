@@ -23,25 +23,19 @@ public class UnitTest1 : NaiveFixture
     [Fact]
     public async Task Test1()
     {
-        var accountId = Guid.NewGuid().ToString();
-
-        var event1 = GeneratePersonalAccountCreationStarted(accountId);
-        var event2 = GeneratePersonalAccountInformationAdded(accountId);
-        
-        var expectedEvents = GenerateExpectedEvents(accountId);
-        var theAccountStream = TheAccountStream(event1.AccountId);
+        var theAccountId = Guid.NewGuid().ToString();
 
         var seedEvents = new List<object>
         {
-            event1,
-            event2
+            PersonalAccountCreationStarted(theAccountId),
+            PersonalAccountInformationAdded(theAccountId)
         };
 
-        await SeedEventStore(seedEvents, theAccountStream);
+        await SeedEventStore(seedEvents, TheAccountStream(theAccountId));
 
         await Service.Handle(
             new AccountCommands.CompletePersonalAccount(
-                event1.AccountId,
+                PersonalAccountCreationStarted(theAccountId).AccountId,
                 "email",
                 "password", 
                 "securityQuestion",
@@ -50,30 +44,14 @@ public class UnitTest1 : NaiveFixture
                 "termsOfUse"),
             new CancellationToken());
 
-        var accountEvents = await ReadEventsFromStream(theAccountStream);
+        var accountEvents = await ReadEventsFromStream(TheAccountStream(theAccountId));
 
         accountEvents
             .Select(x => x.Payload)
             .Should()
             .BeEquivalentTo(
-                expectedEvents.Select(x => x.Event));
+                ExpectedEvents(theAccountId).Select(x => x.Event));
     }
-
-    private static Events.V1.PersonalAccountInformationAdded GeneratePersonalAccountInformationAdded(string accountId)
-    {
-        return new Events.V1.PersonalAccountInformationAdded(
-            accountId, "FirstName", "LastName", "1/6/65", "InformationAdded");
-    }
-
-    private static Events.V1.PersonalAccountCreationStarted GeneratePersonalAccountCreationStarted(string accountId)
-    {
-        return new Events.V1.PersonalAccountCreationStarted(
-            accountId, "Started", "Pumper");
-    }
-
-    private static StreamName TheAccountStream(string accountId) =>
-        new(GetStreamName(new AccountId(accountId)));
-    
 
     private async Task SeedEventStore(List<object> seedEvents, StreamName streamName)
     {
@@ -89,7 +67,7 @@ public class UnitTest1 : NaiveFixture
         );
     }
 
-    private static Change[] GenerateExpectedEvents(string accountId)
+    private static Change[] ExpectedEvents(string accountId)
     {
         return new Change[] {
             new(
@@ -115,6 +93,19 @@ public class UnitTest1 : NaiveFixture
             new CancellationToken());
     }
 
-    static StreamName GetStreamName(AccountId accountId) => new($"Account-{accountId}");
+    private static Events.V1.PersonalAccountInformationAdded PersonalAccountInformationAdded(string accountId)
+    {
+        return new Events.V1.PersonalAccountInformationAdded(
+            accountId, "FirstName", "LastName", "1/6/65", "InformationAdded");
+    }
 
+    private static Events.V1.PersonalAccountCreationStarted PersonalAccountCreationStarted(string accountId)
+    {
+        return new Events.V1.PersonalAccountCreationStarted(
+            accountId, "Started", "Pumper");
+    }
+
+    private static StreamName TheAccountStream(string accountId) => new(GetStreamName(new AccountId(accountId)));
+
+    private static StreamName GetStreamName(AccountId accountId) => new($"Account-{accountId}");
 }
