@@ -29,12 +29,13 @@ public class UnitTest1 : NaiveFixture
         
         var streamName = new StreamName(GetStreamName(new AccountId(ev1.AccountId)));
 
+        var newEvents = new List<object>();
+
+        newEvents.Add(ev1);
+        newEvents.Add(ev2);
+        
         var streamEvents = 
-            new List<object>
-            {
-                ev1, 
-                ev2
-            }.Select(e => 
+            newEvents.Select(e => 
                 new StreamEvent(Guid.NewGuid(), e, new Metadata(), "", 0));
 
         await EventStore.AppendEvents(
