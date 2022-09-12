@@ -25,12 +25,10 @@ public class UnitTest1 : NaiveFixture
         var theAccountId = new AccountId(Guid.NewGuid().ToString());
 
         await SeedEventStoreWithEvents(
-            new List<object>
-            {
-                PersonalAccountCreationStarted(theAccountId),
-                PersonalAccountInformationAdded(theAccountId)
-            }, 
-            GetStreamName(theAccountId));
+            GetStreamName(theAccountId), 
+            PersonalAccountCreationStarted(theAccountId),
+            PersonalAccountInformationAdded(theAccountId)
+        );
 
         await Service.Handle(
             new AccountCommands.CompletePersonalAccount(
@@ -52,7 +50,7 @@ public class UnitTest1 : NaiveFixture
                 ExpectedEvents(theAccountId).Select(x => x.Event));
     }
 
-    private async Task SeedEventStoreWithEvents(IEnumerable<object> seedEvents, StreamName streamName)
+    private async Task SeedEventStoreWithEvents(StreamName streamName, params object[] seedEvents)
     {
         var streamEvents =
             seedEvents.Select(e =>
@@ -70,7 +68,7 @@ public class UnitTest1 : NaiveFixture
     {
         return new Change[] {
             new(
-                new Events.V1.PersonalAccountCreationStarted(accountId.ToString(), "Started", "Pumper"),
+                new Events.V1.PersonalAccountCreationStarted(accountId, "Started", "Pumper"),
                 "V1.PersonalAccountCreationStarted"
             ),
             new(
