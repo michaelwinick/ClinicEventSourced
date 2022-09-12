@@ -26,8 +26,10 @@ public class UnitTest1 : NaiveFixture
 
         await SeedStreamWithEvents(
             GetStreamName(theAccountId), 
-            PersonalAccountCreationStarted(theAccountId),
-            PersonalAccountInformationAdded(theAccountId)
+            new Events.V1.PersonalAccountCreationStarted(
+                theAccountId, "Started", "Pumper"),
+            new Events.V1.PersonalAccountInformationAdded(
+                theAccountId, "FirstName", "LastName", "1/6/65", "InformationAdded")
         );
 
         await Service.Handle(
@@ -88,18 +90,6 @@ public class UnitTest1 : NaiveFixture
             streamName,
             StreamReadPosition.Start, 100,
             new CancellationToken());
-    }
-
-    private static Events.V1.PersonalAccountInformationAdded PersonalAccountInformationAdded(string accountId)
-    {
-        return new Events.V1.PersonalAccountInformationAdded(
-            accountId, "FirstName", "LastName", "1/6/65", "InformationAdded");
-    }
-
-    private static Events.V1.PersonalAccountCreationStarted PersonalAccountCreationStarted(string accountId)
-    {
-        return new Events.V1.PersonalAccountCreationStarted(
-            accountId, "Started", "Pumper");
     }
 
     private static StreamName GetStreamName(AccountId accountId) => new($"Account-{accountId}");
