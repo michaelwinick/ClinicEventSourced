@@ -24,7 +24,7 @@ public class UnitTest1 : NaiveFixture
     {
         var theAccountId = new AccountId(Guid.NewGuid().ToString());
 
-        await SeedEventStoreWithEvents(
+        await SeedStreamWithEvents(
             GetStreamName(theAccountId), 
             PersonalAccountCreationStarted(theAccountId),
             PersonalAccountInformationAdded(theAccountId)
@@ -50,7 +50,7 @@ public class UnitTest1 : NaiveFixture
                 ExpectedEvents(theAccountId).Select(x => x.Event));
     }
 
-    private async Task SeedEventStoreWithEvents(StreamName streamName, params object[] seedEvents)
+    private async Task SeedStreamWithEvents(StreamName streamName, params object[] seedEvents)
     {
         var streamEvents =
             seedEvents.Select(e =>
